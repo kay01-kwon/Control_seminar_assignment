@@ -11,9 +11,11 @@ Delta = (m_p+m_c)*I_pc + m_c*m_p*l^2;
 
 % A 및 B 행렬 구해서 기입할 것
 
-% Controllability 확인
+% Controllability 확인 
+% M = ctrb(A,B)
+% rank(M) 이 4(state variable 갯수- x, dxdt, theta, dthetadt 총 네개)이면 controllable 그렇지 않으면 uncontrollable 
 
-t_span = [0 100];
+t_span = [0 10];
 x0 = [0;0;0;-0.1];
 
 % To do: 원하는 폴 위치 기입
@@ -21,8 +23,10 @@ des_poles = [;;;];
 
 K = place(A,B,des_poles);
 
-% cartpend_dynamics(x,m_p,m_c,l,g,제어 입력)
+r = [1;0;0;0];
+% cartpend_dynamics(x,m_p,m_c,l,g,제어 입력=-K*(x-r))
 
+% To do: 0을 제어입력으로 바꾸기
 [t,x] = ode45(@(t,x) cartpend_dynamics(x,m_p,m_c,l,g,0),t_span,x0);
 
 for k=1:length(t)
